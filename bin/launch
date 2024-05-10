@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Assuming the command to run is quoted.
+#  Run in a subshell, in the background, redirecting all output away..
+#echo "Launching '$@'..."
+(
+    eval "$@" >/dev/null 2>&1 &
+)

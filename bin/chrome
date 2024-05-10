@@ -1,0 +1,58 @@
+#!/bin/bash
+
+_BASE_DIR="${HOME}/.config/google-chrome"
+
+function launch-chrome() {
+    if [ "${1}" = "" ]; then
+        echo -n "Please specify the name of a profile, or 'default'."
+        echo "  Current profiles:"
+        ls -d "${_BASE_DIR}."* | sed -E "s|${_BASE_DIR}\.||"
+        echo "default3 (*special case)"
+        return 1
+    elif [ "${1,,}" = "default" ]; then
+        # Presumably?  We'll just omit using that option...
+        #DATA_DIR="${_BASE_DIR}/Default"
+        DATA_DIR="${_BASE_DIR}"
+
+        read -r -d '' C_COMMAND <<EOF
+echo -e "Starting google-chrome\x21 (with data_dir: '${DATA_DIR}')" && \
+google-chrome \
+  --password-store=basic \
+
+EOF
+    else
+        if [ "${1,,}" = "default3" ]; then
+            DATA_DIR="${_BASE_DIR}.default2/Default"  # note: there's a 'Default' inside this 'Default' (inner is default3, outer is default2)
+            echo "Special case: default3, data_dir: '${DATA_DIR}'"
+        else
+            DATA_DIR="${_BASE_DIR}.${1}"
+        fi
+
+        if [ ! -e "${DATA_DIR}" ]; then
+            echo "(DATA_DIR: '${DATA_DIR}' not found)"
+            echo -n "Is this a new profile? The expected data dir doesn't exist.  [yes/no]: "
+            read ANS _XTRA
+            if [ "${ANS^^}" = "YES" ]; then
+                echo "Okay! Creating new data dir.."
+                mkdir -pv "${DATA_DIR}"
+            else
+                echo "[DEBUG] Answer: '${ANS^^}'"
+                echo "Okay, not proceeding..."
+                return 1
+            fi
+        fi
+
+        read -r -d '' C_COMMAND <<EOF
+echo -e "Starting google-chrome\x21" && \
+google-chrome \
+  --password-store=basic \
+  --user-data-dir=${DATA_DIR} \
+
+EOF
+    fi
+
+    echo "Using command: '${C_COMMAND}'"
+    eval "${C_COMMAND}"
+}
+
+launch-chrome "$@"

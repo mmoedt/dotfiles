@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -z "${1}" ]; then
+    SNAME="scr$(date +%Y%m%d.%H%M)" # Set a most-probably-unique session name if not specified
+else
+    SNAME="${1}-$(date +%Y%m%d.%H%M)"
+    shift 1
+fi
+
+OPTIONS="-S ${SNAME}"
+# OPTIONS="${OPTIONS} -Logfile ${SNAME}.%n"  # logfile name/spec now in .screenrc
+
+screen ${OPTIONS} ${@}

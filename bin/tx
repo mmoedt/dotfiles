@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+# Preserve permissions (p), and modification times (t)
+#rsync -rlDPpt -v -z --compress-level=1 --timeout=30 -e "ssh -2 -ax -c blowfish" "$@"
+rsync -rlDPpt -v -z --compress-level=1 --timeout=30 -e "ssh -2 -ax" "$@"

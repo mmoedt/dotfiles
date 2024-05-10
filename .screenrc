@@ -1,0 +1,104 @@
+
+### TERM SETUP
+#
+#terminfo rxvt-unicode ti@:te@:
+terminfo rxvt-unicode 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# Change the xterm initialization string from is2=\E[!p\E[?3;4l\E[4l\E>
+# (This fixes the "Aborted because of window size change" konsole symptoms found
+#  in bug #134198)
+#termcapinfo xterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+
+# Trying to edit the xterm title.. (unsuccessfully so far)
+#termcapinfo xterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l' 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+# https://superuser.com/questions/130407/how-can-i-automatically-update-the-title-in-an-xterm-running-screen
+#termcapinfo xterm*|rxvt* 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+
+# or..
+# allow bold colors - necessary for some reason
+#attrcolor b ".I"
+# tell screen how to set colors. AB = background, AF=foreground
+#termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+# use current bg color for erased chars
+#defbce on
+
+# COLOR:
+#term screen-256color
+#term screen
+term xterm-256color
+
+### CONFIG
+#
+escape ^\\
+
+# ENV?
+#
+# Misc options:
+nonblock on
+
+# Unicode and UTF-8
+defc1 off
+defutf8 on
+setenv LANG en_US.UTF-8
+setenv LC_CTYPE en_US.UTF-8
+
+defscrollback 5000
+
+# Change the way screen does highlighting:
+sorendition kw
+
+# STATUS LINE
+
+#
+# OPTION 1
+#
+backtick 1 5 5 true
+termcapinfo xterm*|rxvt* 'hs:ts=\E]2;:fs=\007:ds=\E]2;\007'
+hardstatus string "[%S:%H]"
+#caption string '%{= kG}[ %{G}%H %{g}: %{G}%S %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %Y-%m-%d %{W} %c %{g}]'
+# trying blue ('b') background instead of black ('k')
+caption string '%{= bG}[ %{G}%H %{g}: %{G}%S %{g}][%= %{= bw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %Y-%m-%d %{W} %c %{g}]'
+caption always
+
+##
+## OPTION 2
+##
+#hardstatus on
+#hardstatus alwayslastline
+#hardstatus string '%{= kG}[ %{G}%H %{g}: %{G}%S %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %Y-%m-%d %{W} %c %{g}]'
+#
+## test:
+#caption splitonly
+##caption string '[ %H : %S] %3n %t'
+##caption string '%{= kG}[ %{G}%H %{g}: %{G}%S %{g}] %2n %t'
+## This is the default: caption string '%3n %t'
+#caption string '%3n %t'
+
+## REF
+##
+###
+###hardstatus on
+###hardstatus alwayslastline
+###hardstatus string '%{= kG}[ %{G}%H %{g}: %{G}%S %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %Y-%m-%d %{W} %c %{g}]'
+##
+### From attempts at trying to use the hardstatus to set window title:
+##backtick 1 5 5 true
+##termcapinfo xterm*|rxvt* 'hs:ts=\E]2;:fs=\007:ds=\E]2;\007'
+##hardstatus string "[%S:%H]"
+##caption string '%{= kG}[ %{G}%H %{g}: %{G}%S %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %Y-%m-%d %{W} %c %{g}]'
+##caption always
+###hardstatus string '[%H:%S]'
+###defhstatus "$USER@^EH || screen ^E:(^Et)"
+###hardstatus off
+###caption string '%{= kG}[ %{G}%H %{g}: %{G}%S %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %Y-%m-%d %{W} %c %{g}]'
+###caption always
+
+# KEYBINDINGS
+#
+bind - resize -2
+bind + resize +2
+
+# TEST
+zombie qr
+
+logfile slog.%H-%S-%n-%t.txt

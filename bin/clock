@@ -1,0 +1,15 @@
+#!/bin/bash
+
+PREFIX="$(hostname) :"
+
+if [[ "$@" != "" ]]; then
+    PREFIX="${PREFIX} $@ :"
+fi
+
+
+while true
+do
+    clear
+    echo "${PREFIX} $(date)"
+    sleep 1.0
+done

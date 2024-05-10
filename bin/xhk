@@ -1,0 +1,7 @@
+#!/bin/bash
+(
+  cd ~/onehanded/xhk
+  DEVID="$(xinput list | grep -A 50 'Virtual core keyboard' | grep 'Microsoft.*Nano Transceiver' | head -n 1 | sed -r 's/.*id=([0-9]+).*/\1/')"
+  echo "Using: '$(xinput list | grep id=${DEVID})'"
+  ./xhk -d -i ${DEVID} &
+)

@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+import base64
+import sys
+
+def decode(encoded):
+    return base64.urlsafe_b64decode(encoded + '===')
+
+def show(token):
+    header, payload, signature = token.split('.')
+    print('\nheader: %s,\npayload: %s,\nsignature: %s' % (header, payload, signature))
+    print('\nheader: %s\npayload: %s\n' % (decode(header), decode(payload)))
+
+test_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+
+def main(args):
+    if len(args) >= 2 and args[1] == 'test':
+        show(test_token)
+        return 1
+    else:
+        for line in sys.stdin:
+            show(line)
+        return 0
+
+if __name__ == '__main__':
+   sys.exit(main(sys.argv))
+

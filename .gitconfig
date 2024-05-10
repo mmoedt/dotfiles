@@ -1,0 +1,114 @@
+#[http]
+#    sslVerify = false
+#[http "https://bitbucket.xxx.local"]
+#    proxy = http://localhost:3128
+[user]
+    name = Fixme First Last
+    email = fixme@example.com
+[color]
+    ui = true
+    status = auto
+    branch = auto
+    diff = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+[merge]
+    tool = kdiff3
+    # ff = only
+[push]
+    default = upstream
+    autoSetupRemote = true
+[alias]
+    cam = commit -am
+    br = branch -vv --sort=committerdate
+    br2 = branch -vv --sort=-committerdate
+    st = status -u
+    st2 = status -uno
+    tagsort = for-each-ref --sort=taggerdate --format '%(refname) %(taggerdate)' refs/tags
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+    lol    = log --graph --decorate --oneline
+    lola   = log --graph --decorate --oneline --all
+    lolan  = log --graph --decorate --oneline --all --name-status
+    loland = log --graph --decorate --oneline --all --name-status --abbrev-commit --format=format:'%C(yellow)%h %C(reset)%C(bold blue)%cd%C(reset)%C(reset)%C(bold yellow)%d%C(reset) %C(white)%s%C(reset) %C(dim white)- %an\n' --date=short
+    lolas  = log --graph --decorate --oneline --all --stat
+    loln  = log --graph --decorate --oneline --name-status
+    lolnd = log --graph --decorate --oneline --name-status --abbrev-commit --format=format:'%C(yellow)%h %C(reset)%C(bold blue)%cd%C(reset)%C(reset)%C(bold yellow)%d%C(reset) %C(white)%s%C(reset) %C(dim white)- %an\n' --date=short
+    lols  = log --graph --decorate --oneline --stat
+    lops  = log --patch --follow --stat
+    log2   = log --graph --decorate --format=format:'%C(yellow)%h%C(reset) %C(reset)%C(bold yellow)%d%C(reset) %C(bold green)%cd%C(reset) %C(white)%s%C(reset) %C(dim white)- %an' --date=short --all
+    log3   = log --graph --decorate --format=format:'%C(yellow)%h%C(reset) %C(reset)%C(bold yellow)%d%C(reset) %C(bold green)%cd%C(reset) %C(white)%s%C(reset) %C(dim white)- %an' --date=short --all --oneline --name-status
+    log4   = log --graph --decorate --oneline --all --format=format:'%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s'
+    # mm: test
+    # lolan2 = log --graph --decorate --oneline --name-status --date=short
+    # lolan3 = log --graph --decorate --oneline --name-status --date=iso
+    cdiff = diff --cached
+    diffc = diff --color-words
+    # from: https://stackoverflow.com/questions/52123651/how-to-show-whitespace-differences-with-git-word-diff
+    diffw = diff --word-diff-regex='[ ]+|[^ ]+'
+    # shortcut to run against the current commit..
+    diffw1 = diff --word-diff-regex='[ ]+|[^ ]+' HEAD~1
+    # # Missing 'loland' which I liked recently..
+    # # also, for using git to do diffs with files not in git ..
+    #
+    # From http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
+    lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    # Using custom alias for meld usage instead of making it the external diff tool..
+    #  solution from: http://stackoverflow.com/questions/23157772/conditional-external-tool-git-diff-comparison
+    meld = difftool -t "meld" -y
+    meld2 = difftool -t "meld" -y --dir-diff
+    # Complex command example:
+    complex = "!f() { echo 'complex commands here...' }; f"
+    diffr = "!f() { git diff \"${1}\"^..\"$1\"; }; f"
+    #
+    # fetch all changes refs from origin for checking out gerrit patchsets
+    fetchrefs = fetch origin "+refs/changes/*:refs/remotes/origin/changes/*"
+    #
+    # Fix whitespace.  Tip pulled from http://stackoverflow.com/questions/19151940/git-remove-trailing-whitespace-in-new-files-before-commit
+    # fixws - fix whitespace for the last commit.  (e.g. use after rebasing and squashing, before review)
+    fixws = rebase --whitespace=fix HEAD~
+    #
+    # Status without showing untracked
+    stu = status -uno
+    st = status -uno
+    #
+    # where - convenient way to report the base of the current git repo
+    where = rev-parse --show-toplevel
+    wt = worktree
+
+    # https://stackoverflow.com/questions/1753070/how-do-i-configure-git-to-ignore-some-files-locally
+    ignore = update-index --assume-unchanged
+    unignore = update-index --no-assume-unchanged
+    ignored = !git ls-files -v | grep "^[[:lower:]]"
+[pull]
+    rebase = true
+[core]
+    editor = emacs
+    excludesfile = /home/fixme/.gitignore
+    whitespace = trailing-space,space-before-tab,tab-in-indent,tabwidth=4
+[apply]
+    whitespace = fix
+[commit]
+    template = /home/fixme/.gitmessage
+# using alias 'meld' instead
+# [diff]
+#     external = /home/michaelmo/bin/git-diff-meld
+[diff]
+    # e.g. https://stackoverflow.com/questions/5257553/coloring-white-space-in-git-diffs-output
+    wsErrorHighlight = all
+[rebase]
+    autoStash = true
