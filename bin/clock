@@ -10,6 +10,6 @@ fi
 while true
 do
     clear
-    echo "${PREFIX} $(date)"
+    echo -n "${PREFIX} $(date)"
     sleep 1.0
 done

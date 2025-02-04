@@ -23,9 +23,10 @@ terminfo rxvt-unicode 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 #defbce on
 
 # COLOR:
-#term screen-256color
+# screen-256color works much better with emacs
+term screen-256color
 #term screen
-term xterm-256color
+#term xterm-256color
 
 ### CONFIG
 #
